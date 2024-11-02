@@ -1021,7 +1021,10 @@ export function GyouQuests(): Quest[] {
           name: "Offhand Remarkable",
           // eslint-disable-next-line libram/verify-constants
           ready: () => have($item`August Scepter`),
-          completed: () => !have($skill`Aug. 13th: Left/Off Hander's Day!`) || have($effect`Offhand Remarkable`) || get("_aug13Cast", false),
+          completed: () =>
+            !have($skill`Aug. 13th: Left/Off Hander's Day!`) ||
+            have($effect`Offhand Remarkable`) ||
+            get("_aug13Cast", false),
           do: () =>
             // eslint-disable-next-line libram/verify-constants
             useSkill($skill`Aug. 13th: Left/Off Hander's Day!`),
