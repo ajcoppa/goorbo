@@ -650,15 +650,6 @@ export function GyouQuests(): Quest[] {
           do: () => cliExecute("spoon wombat"),
         },
         {
-          name: "Install Alternate Workshed",
-          ready: () => have(altWorkshed()),
-          completed: () =>
-            altWorkshed() === $item`none` ||
-            get("_workshedItemUsed") ||
-            getWorkshed() === altWorkshed(),
-          do: () => use(altWorkshed()),
-        },
-        {
           name: "Gold Wedding Ring",
           completed: () =>
             !have($skill`Comprehensive Cartography`) ||
