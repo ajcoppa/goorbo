@@ -893,8 +893,7 @@ export function GyouQuests(): Quest[] {
           completed: () => pvpAttacksLeft() === 0 || !hippyStoneBroken(),
           do: (): void => {
             cliExecute("unequip");
-            cliExecute("UberPvPOptimizer");
-            cliExecute("swagger");
+            cliExecute("PVP_MAB");
           },
         },
         {
