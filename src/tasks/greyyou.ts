@@ -11,7 +11,6 @@ import {
   getClanName,
   getWorkshed,
   gnomadsAvailable,
-  handlingChoice,
   haveEquipped,
   hippyStoneBroken,
   inebrietyLimit,
@@ -38,7 +37,6 @@ import {
   storageAmount,
   takeCloset,
   toInt,
-  totalFreeRests,
   use,
   useFamiliar,
   useSkill,
@@ -94,47 +92,10 @@ import { targetClass } from "./perm";
 
 function firstWorkshed() {
   return (
-    $items`model train set, Asdon Martin keyfob, cold medicine cabinet, Little Geneticist DNA-Splicing Lab, portable Mayo Clinic`.find(
+    $items`model train set, Asdon Martin keyfob (on ring), cold medicine cabinet, Little Geneticist DNA-Splicing Lab, portable Mayo Clinic`.find(
       (it) => have(it) || getWorkshed() === it || storageAmount(it) > 0
     ) || $item`none`
   );
-}
-function altWorkshed() {
-  const ws = getWorkshed();
-  switch (ws) {
-    case $item`model train set`:
-      return (
-        $items`cold medicine cabinet, Asdon Martin keyfob, Little Geneticist DNA-Splicing Lab, portable Mayo Clinic`.find(
-          (it) => have(it) || getWorkshed() === it || storageAmount(it) > 0
-        ) || ws
-      );
-    case $item`Asdon Martin keyfob`:
-      return (
-        $items`cold medicine cabinet, model train set, Little Geneticist DNA-Splicing Lab, portable Mayo Clinic`.find(
-          (it) => have(it) || getWorkshed() === it || storageAmount(it) > 0
-        ) || ws
-      );
-    case $item`cold medicine cabinet`:
-      return (
-        $items`Asdon Martin keyfob, model train set, Little Geneticist DNA-Splicing Lab, portable Mayo Clinic, warbear induction oven, snow machine`.find(
-          (it) => have(it) || getWorkshed() === it || storageAmount(it) > 0
-        ) || ws
-      );
-    case $item`Little Geneticist DNA-Splicing Lab`:
-      return (
-        $items`cold medicine cabinet, Asdon Martin keyfob, model train set, portable Mayo Clinic`.find(
-          (it) => have(it) || getWorkshed() === it || storageAmount(it) > 0
-        ) || ws
-      );
-    case $item`portable Mayo Clinic`:
-      return (
-        $items`cold medicine cabinet, model train set, Asdon Martin keyfob, Little Geneticist DNA-Splicing Lab`.find(
-          (it) => have(it) || getWorkshed() === it || storageAmount(it) > 0
-        ) || ws
-      );
-    default:
-      return $item`none`;
-  }
 }
 
 export function GyouQuests(): Quest[] {
@@ -322,7 +283,7 @@ export function GyouQuests(): Quest[] {
         {
           name: "Make Soda Bread",
           completed: () =>
-            getWorkshed() !== $item`Asdon Martin keyfob` ||
+            getWorkshed() !== $item`Asdon Martin keyfob (on ring)` ||
             have($effect`Driving Observantly`) ||
             availableAmount($item`loaf of soda bread`) >= 10,
           do: () => {
@@ -336,7 +297,8 @@ export function GyouQuests(): Quest[] {
         {
           name: "Drive Observantly",
           completed: () =>
-            getWorkshed() !== $item`Asdon Martin keyfob` || have($effect`Driving Observantly`),
+            getWorkshed() !== $item`Asdon Martin keyfob (on ring)` ||
+            have($effect`Driving Observantly`),
           do: () => AsdonMartin.drive($effect`Driving Observantly`, 30, false),
         },
         {

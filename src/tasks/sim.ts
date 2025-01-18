@@ -87,7 +87,7 @@ const profitList: Requirement[] = [
   { thing: $item`mafia thumb ring`, why: "in-run farming profits", optional: true },
   { thing: $item`SongBoom™ BoomBox`, why: "in-run farming profits", optional: true },
   {
-    thing: $items`Asdon Martin keyfob, Little Geneticist DNA-Splicing Lab, portable Mayo Clinic, warbear induction oven, snow machine`,
+    thing: $items`Asdon Martin keyfob (on ring), Little Geneticist DNA-Splicing Lab, portable Mayo Clinic, warbear induction oven, snow machine`,
     why: "various profits",
     optional: true,
   },

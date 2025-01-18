@@ -9,7 +9,8 @@
     "build:types": "tsc",
     "build:js": "webpack",
     "lint": "eslint src && prettier --check .",
-    "watch": "webpack --watch --progress"
+    "watch": "webpack --watch --progress",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",

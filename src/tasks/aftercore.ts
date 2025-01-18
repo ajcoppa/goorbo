@@ -10,7 +10,6 @@ import {
   getWorkshed,
   gnomadsAvailable,
   guildStoreAvailable,
-  handlingChoice,
   haveEffect,
   haveEquipped,
   hippyStoneBroken,
@@ -135,7 +134,7 @@ export function AftercoreQuest(): Quest {
         name: "Drive Observantly",
         completed: () =>
           get("dailyDungeonDone") ||
-          getWorkshed() !== $item`Asdon Martin keyfob` ||
+          getWorkshed() !== $item`Asdon Martin keyfob (on ring)` ||
           haveEffect($effect`Driving Observantly`) >=
             (totallyDrunk() || !have($item`Drunkula's wineglass`)
               ? myAdventures()
