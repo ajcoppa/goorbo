@@ -8,6 +8,7 @@ import {
   inebrietyLimit,
   Item,
   itemAmount,
+  Location,
   mallPrice,
   Monster,
   myAdventures,
@@ -20,19 +21,25 @@ import {
   retrieveItem,
   spleenLimit,
   use,
+  visitUrl,
 } from "kolmafia";
 import {
   $class,
+  $effects,
   $familiar,
   $familiars,
   $item,
   $items,
+  $location,
   $phylum,
+  $skill,
   get,
   getBanishedMonsters,
   have,
+  Macro,
   Snapper,
 } from "libram";
+import { CombatStrategy, OutfitSpec, Task } from "grimoire-kolmafia";
 import { garboAverageValue, garboValue } from "../engine/profits";
 import { args } from "../args";
 
@@ -216,3 +223,67 @@ export function isGoodGarboScript(scr: string): boolean {
   // Returns true if scr includes "garbo", and doesn't include a semicolon
   return scr.includes("garbo") && !scr.includes(";");
 }
+
+export const cyberOutfit: OutfitSpec = {
+  equip: [
+    $item`giant yellow hat`,
+    $item`June cleaver`,
+    $item`visual packet sniffer`,
+    $item`zero-trust tanktop`,
+  ].concat(
+    have($item`familiar-in-the-middle wrapper`) ? [$item`familiar-in-the-middle wrapper`] : []
+  ),
+  acc1: $item`retro floppy disk`,
+  acc2: $item`retro floppy disk`,
+  acc3: $item`retro floppy disk`,
+  familiar: $familiar`Shorter-Order Cook`,
+};
+
+export function nextCyberZone(): Location {
+  const mapping = {
+    _cyberZone1Turns: $location`Cyberzone 1`,
+    _cyberZone2Turns: $location`Cyberzone 2`,
+    _cyberZone3Turns: $location`Cyberzone 3`,
+  };
+  for (const [pref, loc] of Object.entries(mapping)) {
+    if (get(pref, 0) < 20) return loc;
+  }
+  return $location`none`;
+}
+
+export const cyberTasks = (): Task[] => [
+  {
+    name: "CyberRealm Freebies",
+    completed: () => get("_cyberTrashCollected", false),
+    do: () => {
+      visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
+      visitUrl("place.php?whichplace=serverroom&action=serverroom_trash1");
+    },
+  },
+  {
+    name: "CyberRealm",
+    completed: () => nextCyberZone() === $location`none`,
+    do: () => nextCyberZone(),
+    effects: () => $effects`Astral Shell, Elemental Saucesphere, Scarysauce, Minor Invulnerability`,
+    outfit: cyberOutfit,
+    combat: new CombatStrategy().macro(() =>
+      Macro.if_(
+        "!monsterphylum construct",
+        Macro.tryItem([$item`porquoise-handled sixgun`, $item`train whistle`])
+          .attack()
+          .repeat()
+      )
+        .skill($skill`Throw Cyber Rock`)
+        .repeat()
+    ),
+    choices: () => ({
+      1545: 1,
+      1546: 1,
+      1547: 1,
+      1548: 1,
+      1549: 1,
+      1550: 1,
+    }),
+    limit: { tries: 60 },
+  },
+];
