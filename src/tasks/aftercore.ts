@@ -10,6 +10,7 @@ import {
   getWorkshed,
   gnomadsAvailable,
   guildStoreAvailable,
+  handlingChoice,
   haveEffect,
   haveEquipped,
   hippyStoneBroken,
@@ -66,7 +67,6 @@ import { getCurrentLeg, Leg, Quest } from "./structure";
 import {
   bestFam,
   canDiet,
-  cyberTasks,
   getGarden,
   isGoodGarboScript,
   maxBase,
@@ -191,29 +191,29 @@ export function AftercoreQuest(): Quest {
           !have($item`lucky gold ring`) || get("_stenchAirportToday") || get("stenchAirportAlways"),
         do: () => use($item`one-day ticket to Dinseylandfill`),
       },
-      // {
-      //   name: "June Cleaver",
-      //   completed: () =>
-      //     !have($item`June cleaver`) || get("_juneCleaverFightsLeft") > 0 || myAdventures() === 0,
-      //   choices: () => ({
-      //     1467: 3, //Poetic Justice
-      //     1468: get("_juneCleaverSkips") < 5 ? 4 : 2, //Aunts not Ants
-      //     1469: 3, //Beware of Aligator
-      //     1470: get("_juneCleaverSkips") < 5 ? 4 : 2, //Teacher's Pet
-      //     1471: 1, //Lost and Found
-      //     1472: get("_juneCleaverSkips") < 5 ? 4 : 1, //Summer Days
-      //     1473: get("_juneCleaverSkips") < 5 ? 4 : 1, //Bath Time
-      //     1474: get("_juneCleaverSkips") < 5 ? 4 : 2, //Delicious Sprouts
-      //     1475: 1, //Hypnotic Master
-      //   }),
-      //   do: $location`Noob Cave`,
-      //   post: () => {
-      //     if (handlingChoice()) visitUrl("main.php");
-      //     if (have($effect`Beaten Up`)) uneffect($effect`Beaten Up`);
-      //   },
-      //   outfit: () => ({ equip: $items`June cleaver` }),
-      //   limit: undefined,
-      // },
+      {
+        name: "June Cleaver",
+        completed: () =>
+          !have($item`June cleaver`) || get("_juneCleaverFightsLeft") > 0 || myAdventures() === 0,
+        choices: () => ({
+          1467: 3, //Poetic Justice
+          1468: get("_juneCleaverSkips") < 5 ? 4 : 2, //Aunts not Ants
+          1469: 3, //Beware of Aligator
+          1470: get("_juneCleaverSkips") < 5 ? 4 : 2, //Teacher's Pet
+          1471: 1, //Lost and Found
+          1472: get("_juneCleaverSkips") < 5 ? 4 : 1, //Summer Days
+          1473: get("_juneCleaverSkips") < 5 ? 4 : 1, //Bath Time
+          1474: get("_juneCleaverSkips") < 5 ? 4 : 2, //Delicious Sprouts
+          1475: 1, //Hypnotic Master
+        }),
+        do: $location`Noob Cave`,
+        post: () => {
+          if (handlingChoice()) visitUrl("main.php");
+          if (have($effect`Beaten Up`)) uneffect($effect`Beaten Up`);
+        },
+        outfit: () => ({ equip: $items`June cleaver` }),
+        limit: undefined,
+      },
       {
         name: "Restore HP",
         completed: () => myHp() > 0.5 * myMaxhp(),
@@ -437,39 +437,6 @@ export function AftercoreQuest(): Quest {
         })),
         do: () => false,
       },
-      {
-        name: "CyberRealm Freebies",
-        completed: () => get("_cyberRealmFreebiesGotten", false),
-        do: () => {
-          visitUrl("place.php?whichplace=serverroom&action=serverroom_trash1");
-          visitUrl("place.php?whichplace=serverroom&action=serverroom_chipdrawer");
-          set("_cyberRealmFreebiesGotten", true);
-        },
-      },
-      ...cyberTasks(),
-      // {
-      //   name: "CyberRealm Level 3",
-      //   completed: () => $location`Cyberzone 3`.turnsSpent >= 38, // 19 from previous day, 19 from today
-      //   prepare: () => {
-      //     cliExecute("gain 5 damage aura 1 turns 10000 maxmeatspent");
-      //   },
-      //   do: () => $location`Cyberzone 3`,
-      //   effects: () =>
-      //     $effects`Astral Shell, Elemental Saucesphere, Scarysauce, Minor Invulnerability, Shortly Wired`,
-      //   outfit: cyberOutfit,
-      //   combat: new CombatStrategy().macro(() =>
-      //     Macro.if_(
-      //       "!monsterphylum construct",
-      //       Macro.tryItem([$item`porquoise-handled sixgun`, $item`train whistle`])
-      //         .attack()
-      //         .repeat()
-      //     )
-      //       .skill($skill`Throw Cyber Rock`)
-      //       .repeat()
-      //   ),
-
-      //   limit: { tries: 20 },
-      // },
       {
         name: "Garbo",
         completed: () => stooperDrunk() || (!canDiet() && myAdventures() === 0),

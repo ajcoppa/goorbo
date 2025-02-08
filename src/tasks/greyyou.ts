@@ -11,6 +11,7 @@ import {
   getClanName,
   getWorkshed,
   gnomadsAvailable,
+  handlingChoice,
   haveEquipped,
   hippyStoneBroken,
   inebrietyLimit,
@@ -37,6 +38,7 @@ import {
   storageAmount,
   takeCloset,
   toInt,
+  totalFreeRests,
   use,
   useFamiliar,
   useSkill,
@@ -78,7 +80,6 @@ import {
   backstageItemsDone,
   bestFam,
   canDiet,
-  cyberTasks,
   doneAdventuring,
   getGarden,
   haveAll,
@@ -214,37 +215,37 @@ export function GyouQuests(): Quest[] {
           do: () =>
             visitUrl(`gnomes.php?action=trainskill&whichskill=${toInt($skill`Torso Awareness`)}`),
         },
-        // {
-        //   name: "June Cleaver",
-        //   completed: () =>
-        //     !have($item`June cleaver`) || get("_juneCleaverFightsLeft") > 0 || myAdventures() === 0,
-        //   choices: () => ({
-        //     1467: 3, //Poetic Justice
-        //     1468: get("_juneCleaverSkips") < 5 ? 4 : 2, //Aunts not Ants
-        //     1469: 3, //Beware of Aligator
-        //     1470: get("_juneCleaverSkips") < 5 ? 4 : 2, //Teacher's Pet
-        //     1471: 1, //Lost and Found
-        //     1472: get("_juneCleaverSkips") < 5 ? 4 : 1, //Summer Days
-        //     1473: get("_juneCleaverSkips") < 5 ? 4 : 1, //Bath Time
-        //     1474: get("_juneCleaverSkips") < 5 ? 4 : 2, //Delicious Sprouts
-        //     1475: 1, //Hypnotic Master
-        //   }),
-        //   do: $location`Noob Cave`,
-        //   post: () => {
-        //     if (handlingChoice()) visitUrl("main.php");
-        //     if (have($effect`Beaten Up`)) {
-        //       if (have($skill`Tongue of the Walrus`)) useSkill($skill`Tongue of the Walrus`);
-        //       else if (get("_hotTubSoaks") < 5) cliExecute("hottub");
-        //       else if (get("timesRested") < totalFreeRests()) cliExecute("campground rest");
-        //       else if (
-        //         !use($items`tiny house, Space Tours Tripple`.find((it) => have(it)) || $item`none`)
-        //       )
-        //         uneffect($effect`Beaten Up`);
-        //     }
-        //   },
-        //   outfit: () => ({ equip: $items`June cleaver` }),
-        //   limit: undefined,
-        // },
+        {
+          name: "June Cleaver",
+          completed: () =>
+            !have($item`June cleaver`) || get("_juneCleaverFightsLeft") > 0 || myAdventures() === 0,
+          choices: () => ({
+            1467: 3, //Poetic Justice
+            1468: get("_juneCleaverSkips") < 5 ? 4 : 2, //Aunts not Ants
+            1469: 3, //Beware of Aligator
+            1470: get("_juneCleaverSkips") < 5 ? 4 : 2, //Teacher's Pet
+            1471: 1, //Lost and Found
+            1472: get("_juneCleaverSkips") < 5 ? 4 : 1, //Summer Days
+            1473: get("_juneCleaverSkips") < 5 ? 4 : 1, //Bath Time
+            1474: get("_juneCleaverSkips") < 5 ? 4 : 2, //Delicious Sprouts
+            1475: 1, //Hypnotic Master
+          }),
+          do: $location`Noob Cave`,
+          post: () => {
+            if (handlingChoice()) visitUrl("main.php");
+            if (have($effect`Beaten Up`)) {
+              if (have($skill`Tongue of the Walrus`)) useSkill($skill`Tongue of the Walrus`);
+              else if (get("_hotTubSoaks") < 5) cliExecute("hottub");
+              else if (get("timesRested") < totalFreeRests()) cliExecute("campground rest");
+              else if (
+                !use($items`tiny house, Space Tours Tripple`.find((it) => have(it)) || $item`none`)
+              )
+                uneffect($effect`Beaten Up`);
+            }
+          },
+          outfit: () => ({ equip: $items`June cleaver` }),
+          limit: undefined,
+        },
         {
           name: "Autumnaton",
           completed: () =>
@@ -829,80 +830,6 @@ export function GyouQuests(): Quest[] {
           completed: () => args.ascend || have($skill`Liver of Steel`),
           do: () => drink(1, $item`steel margarita`),
         },
-        ...cyberTasks(),
-        // {
-        //   name: "CyberRealm Level 1",
-        //   completed: () => $location`Cyberzone 1`.turnsSpent >= 19,
-        //   do: () => $location`Cyberzone 1`,
-        //   effects: () =>
-        //     $effects`Astral Shell, Elemental Saucesphere, Scarysauce, Minor Invulnerability`,
-        //   outfit: cyberOutfit,
-        //   combat: new CombatStrategy().macro(() =>
-        //     Macro.if_(
-        //       "!monsterphylum construct",
-        //       Macro.tryItem([$item`porquoise-handled sixgun`, $item`train whistle`])
-        //         .attack()
-        //         .repeat()
-        //     )
-        //       .skill($skill`Throw Cyber Rock`)
-        //       .repeat()
-        //   ),
-        //   choices: () => ({
-        //     1545: 1,
-        //     1546: 1,
-        //   }),
-        //   limit: { tries: 20 },
-        // },
-        // {
-        //   name: "CyberRealm Level 2",
-        //   completed: () => $location`Cyberzone 2`.turnsSpent >= 19,
-        //   do: () => $location`Cyberzone 2`,
-        //   effects: () =>
-        //     $effects`Astral Shell, Elemental Saucesphere, Scarysauce, Minor Invulnerability`,
-        //   outfit: cyberOutfit,
-        //   combat: new CombatStrategy().macro(() =>
-        //     Macro.if_(
-        //       "!monsterphylum construct",
-        //       Macro.tryItem([$item`porquoise-handled sixgun`, $item`train whistle`])
-        //         .attack()
-        //         .repeat()
-        //     )
-        //       .skill($skill`Throw Cyber Rock`)
-        //       .repeat()
-        //   ),
-        //   choices: () => ({
-        //     1547: 1,
-        //     1548: 1,
-        //   }),
-        //   limit: { tries: 20 },
-        // },
-        // {
-        //   name: "CyberRealm Level 3",
-        //   completed: () => $location`Cyberzone 3`.turnsSpent >= 19,
-        //   prepare: () => {
-        //     cliExecute("gain 5 damage aura 1 turns 10000 maxmeatspent");
-        //   },
-        //   do: () => $location`Cyberzone 3`,
-        //   effects: () =>
-        //     $effects`Astral Shell, Elemental Saucesphere, Scarysauce, Minor Invulnerability, Shortly Wired`,
-        //   outfit: cyberOutfit,
-        //   combat: new CombatStrategy().macro(() =>
-        //     Macro.if_(
-        //       "!monsterphylum construct",
-        //       Macro.tryItem([$item`porquoise-handled sixgun`, $item`train whistle`])
-        //         .attack()
-        //         .repeat()
-        //     )
-        //       .if_("hppercentbelow 50", Macro.tryItem($item`wired underwear`))
-        //       .skill($skill`Throw Cyber Rock`)
-        //       .repeat()
-        //   ),
-        //   choices: () => ({
-        //     1549: 1,
-        //     1550: 1,
-        //   }),
-        //   limit: { tries: 20 },
-        // },
         {
           name: "Garbo",
           ready: () => get("_stenchAirportToday") || get("stenchAirportAlways"),
