@@ -156,10 +156,10 @@ export function AftercoreQuest(): Quest {
           !DNALab.installed() ||
           DNALab.isHybridized($phylum`Constellation`) ||
           get("dnaSyringe") === $phylum`Constellation`,
-        outfit: {
+        outfit: () => ({
           familiar: bestFam(),
           modifier: `${maxBase()}`,
-        },
+        }),
         do: $location`The Hole in the Sky`,
         combat: new CombatStrategy()
           .macro(Macro.skill($skill`Curse of Weaksauce`), getTodaysHolidayWanderers())
@@ -583,11 +583,9 @@ export function AftercoreQuest(): Quest {
             );
           const nClass = targetClass(true);
           setClass("goorboNextClass", nClass);
-
           const skillsToPerm = new Map();
           targetPerms(false).forEach((sk) => skillsToPerm.set(sk, Lifestyle.softcore));
           const nPerms = targetPerms(true);
-
           const moonsign = toMoonSign(
             have($item`hewn moon-rune spoon`) ||
               !$skills`Torso Awareness, Gnefarious Pickpocketing, Powers of Observatiogn, Gnomish Hardigness, Cosmic Ugnderstanding`.find(

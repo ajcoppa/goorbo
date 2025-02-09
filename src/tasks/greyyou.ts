@@ -345,10 +345,10 @@ export function GyouQuests(): Quest[] {
             !DNALab.installed() ||
             DNALab.isHybridized($phylum`Constellation`) ||
             get("dnaSyringe") === $phylum`Constellation`,
-          outfit: {
+          outfit: () => ({
             familiar: bestFam(),
             modifier: `${maxBase()}`,
-          },
+          }),
           do: $location`The Hole in the Sky`,
           combat: new CombatStrategy()
             .macro(Macro.skill($skill`Infinite Loop`), getTodaysHolidayWanderers())
