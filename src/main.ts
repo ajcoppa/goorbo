@@ -1,4 +1,5 @@
 import { print } from "kolmafia";
+
 import { Args, getTasks } from "grimoire-kolmafia";
 import { AftercoreQuest } from "./tasks/aftercore";
 import { GyouQuests } from "./tasks/greyyou";
@@ -15,10 +16,6 @@ export function main(command?: string): void {
     Args.showHelp(args);
     return;
   }
-  // if (args.profits) {
-  //   print("work in progress");
-  //   return;
-  // }
   if (args.simperms) {
     checkPerms();
     printPermPlan();
