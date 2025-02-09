@@ -11,7 +11,7 @@ import {
   Skill,
   toClass,
 } from "kolmafia";
-import { $class, $classes, $item, $skills, get, have, set } from "libram";
+import { $class, $classes, $item, $skill, $skills, get, have, set } from "libram";
 import { coloredSkill } from "./sim";
 import { args } from "../args";
 
@@ -24,12 +24,15 @@ export function setClass(property: string, value: Class): void {
 
 export const baseClasses = $classes`Seal Clubber, Turtle Tamer, Pastamancer, Sauceror, Disco Bandit, Accordion Thief`;
 export const gnomeSkills = $skills`Torso Awareness, Gnefarious Pickpocketing, Powers of Observatiogn, Gnomish Hardigness, Cosmic Ugnderstanding`;
-const permBlockList = [
-  ...$skills`CLEESH, Chronic Indigestion`,
-  ...Skill.all().filter((sk) =>
-    Item.all().find((it) => it.skill === sk && it.reusable && have(it))
-  ),
-];
+
+const itemSkills = new Set<Skill>();
+for (const item of Item.all()) {
+  const skill = item.skill;
+  if (skill === $skill.none) continue;
+  if (item.reusable && have(item)) itemSkills.add(skill);
+}
+
+const permBlockList = [...$skills`CLEESH, Chronic Indigestion`, ...itemSkills];
 
 export const permTiers = [
   "Tier 0 - All permable non-guild, non-gnome skills (never target these, but perm them if you know them)",
