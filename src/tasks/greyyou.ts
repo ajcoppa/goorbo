@@ -91,14 +91,6 @@ import {
 } from "./utils";
 import { targetClass } from "./perm";
 
-function firstWorkshed() {
-  return (
-    $items`model train set, Asdon Martin keyfob (on ring), cold medicine cabinet, Little Geneticist DNA-Splicing Lab, portable Mayo Clinic`.find(
-      (it) => have(it) || getWorkshed() === it || storageAmount(it) > 0
-    ) || $item`none`
-  );
-}
-
 export function GyouQuests(): Quest[] {
   return [
     {
@@ -144,15 +136,6 @@ export function GyouQuests(): Quest[] {
           completed: () => get("_stenchAirportToday") || get("stenchAirportAlways"),
           do: () => use($item`one-day ticket to Dinseylandfill`),
           tracking: "Garbo",
-        },
-        {
-          name: "Install First Workshed",
-          ready: () => have(firstWorkshed()),
-          completed: () =>
-            firstWorkshed() === $item`none` ||
-            get("_workshedItemUsed") ||
-            getWorkshed() !== $item`none`,
-          do: () => use(firstWorkshed()),
         },
         {
           name: "SIT Course",
