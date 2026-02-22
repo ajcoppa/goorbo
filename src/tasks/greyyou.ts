@@ -468,6 +468,40 @@ export function GyouQuests(): Quest[] {
           tracking: "GooFarming",
         },
         {
+          name: "Knucklebone Farm",
+          completed: () => myAdventures() <= 40 || get("_knuckleboneDrops", 0) >= 100,
+          do: () => $location`The Skeleton Store`,
+          choices: () => ({
+            1060: 5, // Skip Skeleton Store noncombat
+          }),
+          outfit: () => ({
+            hat: $item`Apriling band helmet`,
+            back: $item`McHugeLarge duffel bag`,
+            shirt: $item`Jurassic Parka`,
+            weapon: $item`June cleaver`,
+            offhand: $item`carnivorous potted plant`,
+            pants: $item`designer sweatpants`,
+            acc1: $item`mafia thumb ring`,
+            acc2: $item`lucky gold ring`,
+            acc3: $item`portable cassette player`,
+            familiar: $familiar`Skeleton of Crimbo Past`,
+            famequip: have($item`small peppermint-flavored sugar walking crook`) ?
+              $item`small peppermint-flavored sugar walking crook` :
+              $item`toy Cupid bow`,
+          }),
+          combat: new CombatStrategy()
+            .macro(Macro.skill($skill`Infinite Loop`), getTodaysHolidayWanderers())
+            .macro(() =>
+              Macro.tryItem($item`train whistle`)
+                .tryItem($item`porquoise-handled sixgun`)
+                .trySkill($skill`Double Nanovision`)
+                .attack()
+                .repeat()
+            ),
+          limit: { tries: 150 }, // Skeleton store noncombat every 4 turns, bonus turns from carnplant/thumb ring
+          tracking: "GooFarming",
+        },
+        {
           name: "In-Run Farm",
           completed: () => myAdventures() <= 40,
           acquire: [{ item: $item`seal tooth` }],
