@@ -65,6 +65,9 @@ import {
   ensureEffect,
   get,
   getBanishedMonsters,
+  getRemainingLiver,
+  getRemainingSpleen,
+  getRemainingStomach,
   getTodaysHolidayWanderers,
   have,
   Macro,
@@ -73,6 +76,7 @@ import {
   Snapper,
   SongBoom,
   uneffect,
+  unequip,
 } from "libram";
 import { args } from "../args";
 import { getCurrentLeg, Leg, Quest } from "./structure";
@@ -484,10 +488,13 @@ export function GyouQuests(): Quest[] {
             acc1: $item`mafia thumb ring`,
             acc2: $item`lucky gold ring`,
             acc3: $item`portable cassette player`,
+            // eslint-disable-next-line libram/verify-constants
             familiar: $familiar`Skeleton of Crimbo Past`,
-            famequip: have($item`small peppermint-flavored sugar walking crook`) ?
-              $item`small peppermint-flavored sugar walking crook` :
-              $item`toy Cupid bow`,
+            // eslint-disable-next-line libram/verify-constants
+            famequip: have($item`small peppermint-flavored sugar walking crook`)
+              ? // eslint-disable-next-line libram/verify-constants
+                $item`small peppermint-flavored sugar walking crook`
+              : $item`toy Cupid bow`,
           }),
           combat: new CombatStrategy()
             .macro(Macro.skill($skill`Infinite Loop`), getTodaysHolidayWanderers())
@@ -890,10 +897,35 @@ export function GyouQuests(): Quest[] {
           },
         },
         {
+          name: "Fill Bonus Organs",
+          completed: () => get("_goorboConsumedBonusOrgans", false),
+          outfit: {
+            modifier: "stomach capacity, liver capacity, spleen capacity, -tie",
+          },
+          do: () => {
+            cliExecute("CONSUME ALL");
+            if (
+              getRemainingStomach() === 0 &&
+              getRemainingLiver() === 0 &&
+              getRemainingSpleen() === 0
+            ) {
+              set("_goorboConsumedBonusOrgans", true);
+            } else {
+              print("Failed to CONSUME for bonus organs!");
+              // Will fail automatically due to not setting the property, meaning the task won't complete
+            }
+          },
+          limit: { tries: 1 },
+        },
+        {
           name: "Nightcap",
           ready: () => doneAdventuring(),
           completed: () => args.ascend || totallyDrunk(),
-          do: () => cliExecute("CONSUME NIGHTCAP"),
+          do: () => {
+            // eslint-disable-next-line libram/verify-constants
+            unequip($item`angelbone chopsticks`);
+            cliExecute("CONSUME NIGHTCAP");
+          },
         },
         {
           name: "Barfing Drunk with Stooper",
