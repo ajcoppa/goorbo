@@ -922,6 +922,8 @@ export function GyouQuests(): Quest[] {
           ready: () => doneAdventuring(),
           completed: () => args.ascend || totallyDrunk(),
           do: () => {
+            // Avoid mafia pinky ring being equipped in CONSUME causing a random
+            // liver-granting accessory to be removed, resulting in failed nightcap
             // eslint-disable-next-line libram/verify-constants
             unequip($item`angelbone chopsticks`);
             cliExecute("CONSUME NIGHTCAP");

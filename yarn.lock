@@ -2073,10 +2073,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-libram@^0.9.29:
-  version "0.9.33"
-  resolved "https://registry.yarnpkg.com/libram/-/libram-0.9.33.tgz#dfd6c435c2b647edf6805808e25b887fbe050257"
-  integrity sha512-Sij9WGYJsSzg7swaqxTqoKtucRrNP50J7SAXr3Nt6TY2RsiEWvLGZKGN/cCJ9Pul+qBpfTztC8UAKFMqb/S7DA==
+libram@^0.9.34:
+  version "0.9.34"
+  resolved "https://registry.yarnpkg.com/libram/-/libram-0.9.34.tgz#4c0df764ee0b4bbfcd9111e91f80e689d337c586"
+  integrity sha512-cK32LJoC5STKEu9ninf2U3zg+imNQMalPHG2AjisNhwMo0sRLwwhpWTCC5CRxaaTisDHRUNQaEKCe+r9n1Ho5Q==
   dependencies:
     html-entities "^2.5.2"
 
